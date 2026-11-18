@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#101c20">
+  <meta name="description" content="Explore, colete recursos e construa seu refúgio em Mundo Esquecido.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌲%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <title>Mundo Esquecido</title>
+</head>
+<body>
+  <div id="game"><canvas id="world"></canvas>
+    <div id="loading"><div class="loading-mark">✦</div><strong>MUNDO ESQUECIDO</strong><span>Preparando o mundo...</span><div class="load-track"><i></i></div></div>
+    <div id="rotate"><div>↻</div><strong>Vire o celular</strong><span>Este mundo foi feito para jogar na horizontal.</span></div>
+    <header class="topbar">
+      <div class="brand"><span class="brand-icon">✦</span><div><b>MUNDO ESQUECIDO</b><small id="location">FLORESTA ANTIGA</small></div></div>
+      <div class="vitals"><div class="vital"><span>❤</span><div><i id="health-fill"></i></div><b id="health-text">100</b></div><div class="vital food"><span>◉</span><div><i id="food-fill"></i></div><b id="food-text">100</b></div><div class="vital stamina"><span>ϟ</span><div><i id="energy-fill"></i></div><b id="energy-text">100</b></div></div>
+      <div class="top-actions"><div class="day-pill"><span id="weather-icon">☀</span><span id="clock">08:00</span><small id="day-count">DIA 1</small></div><button id="map-button" class="icon-button" aria-label="Mapa">⌖</button><button id="menu-button" class="icon-button" aria-label="Menu">☰</button></div>
+    </header>
+    <div class="level-chip"><div class="level-gem">✦</div><span>NÍV. <b id="level">1</b></span><div class="xp-track"><i id="xp-fill"></i></div></div>
+    <div id="toast" class="toast"></div>
+    <div id="target-label" class="target-label"></div>
+    <div class="hud-bottom">
+      <div class="stick-zone" id="stick-zone"><div class="stick-ring"><div id="stick-knob"></div></div><small>MOVER</small></div>
+      <div class="hotbar-wrap"><div class="hotbar" id="hotbar"></div><div class="hotbar-caption">TOQUE PARA SELECIONAR · <span id="selected-name">Mãos livres</span></div></div>
+      <div class="actions">
+        <button id="inventory-button" class="action utility"><span>▤</span><small>MOCHILA</small></button>
+        <button id="build-button" class="action utility"><span>⌂</span><small>CONSTRUIR</small></button>
+        <button id="interact-button" class="action interact"><span>✦</span><small id="interact-text">COLETAR</small></button>
+        <button id="attack-button" class="action attack"><span>⚔</span><small>ATACAR</small></button>
+        <button id="jump-button" class="action jump"><span>↑</span><small>PULAR</small></button>
+      </div>
+      <div class="look-hint">ARRASTE PARA OLHAR</div>
+    </div>
+    <div id="panel-backdrop" class="panel-backdrop"></div>
+    <section id="inventory-panel" class="panel">
+      <div class="panel-head"><div><small>SEU EQUIPAMENTO</small><h2>Mochila</h2></div><button class="close-panel">×</button></div>
+      <div class="inventory-layout"><div><h3>RECURSOS</h3><div id="resource-grid" class="resource-grid"></div></div><div class="craft-column"><h3>FABRICAÇÃO</h3><div id="recipe-list" class="recipe-list"></div></div></div>
+      <div class="panel-foot"><span>✦ Seus progressos são salvos automaticamente neste aparelho.</span><button id="save-button" class="soft-button">SALVAR AGORA</button></div>
+    </section>
+    <section id="build-panel" class="panel build-panel">
+      <div class="panel-head"><div><small>SEU REFÚGIO</small><h2>Construir</h2></div><button class="close-panel">×</button></div>
+      <p class="panel-copy">Escolha uma estrutura e toque em <b>COLOCAR</b>. Ela será posicionada à sua frente.</p><div id="build-list" class="build-list"></div>
+    </section>
+    <section id="map-panel" class="panel map-panel">
+      <div class="panel-head"><div><small>SEU TERRITÓRIO</small><h2>Mapa da região</h2></div><button class="close-panel">×</button></div>
+      <canvas id="minimap" width="480" height="320"></canvas><div class="map-legend"><span>● Você</span><span>♣ Floresta</span><span>◆ Ruínas</span><span>≈ Água</span></div>
+    </section>
+    <section id="menu-panel" class="panel menu-panel">
+      <div class="panel-head"><div><small>PAUSA</small><h2>Seu mundo</h2></div><button class="close-panel">×</button></div>
+      <div class="settings-row"><div><b>Qualidade gráfica</b><small>Reduza para economizar bateria</small></div><select id="quality-select"><option value="high">Detalhada</option><option value="medium">Equilibrada</option><option value="low">Econômica</option></select></div>
+      <div class="settings-row"><div><b>Distância de visão</b><small>Ajuste para melhorar o desempenho</small></div><select id="distance-select"><option value="70">Ampla</option><option value="48">Média</option><option value="32">Curta</option></select></div>
+      <button id="resume-button" class="primary-button">VOLTAR AO MUNDO</button><button id="reset-button" class="text-button">Recomeçar aventura</button><p class="save-note">Mundo Esquecido salva automaticamente seu progresso neste dispositivo. Nenhuma conexão é necessária para continuar jogando.</p>
+    </section>
+    <div id="build-confirm" class="build-confirm"><span id="build-selected">Cabana</span><button id="rotate-build">⟳</button><button id="cancel-build">CANCELAR</button><button id="place-build">COLOCAR</button></div>
+    <div id="save-indicator">● SALVO</div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
